@@ -14,7 +14,13 @@ class EventController extends Controller
      */
     public function index()
     {
-        //
+        $events = Event::where('starts_at', '>=', now())
+        ->with(['user', 'tags'])
+        ->orderBy('starts_at', 'asc')
+        ->get();
+
+        return view ('events.index', compact('events'));
+
     }
 
     /**
@@ -24,8 +30,10 @@ class EventController extends Controller
      */
     public function create()
     {
-        //
+
+
     }
+
 
     /**
      * Store a newly created resource in storage.
