@@ -19,7 +19,7 @@ class CreateEventsTable extends Migration
             $table->string('title');
             $table->string('slug');
             $table->text('content');
-            $table->boolean('premium');
+            $table->boolean('premium')->default(false);
             $table->timestamp('starts_at');
             $table->timestamp('ends_at');
 
