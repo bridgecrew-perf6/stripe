@@ -2,11 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tag;
 use App\Models\Event;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
+   
+    public function __construct() {
+
+        $this->middleware('auth', ['only' => ['create', 'store']]);
+    }
+
+   
     /**
      * Display a listing of the resource.
      *
@@ -30,7 +39,7 @@ class EventController extends Controller
      */
     public function create()
     {
-
+        return view('events.create');
 
     }
 
@@ -43,7 +52,33 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $authed_user = auth()->user();
+
+        $event = $authed_user->events()->create([
+            'title' => $request->title,
+            'slug' => Str::slug($request->title),
+            'content' => $request->content,
+            'premium' => $request->filled('premium'),
+            'starts_at' => $request->starts_at,
+            'ends_at' => $request->ends_at,
+        ]);
+
+        $tags = explode(',', $request->tags);
+
+        foreach ($tags as $inputTag) {
+            $inputTag = trim($inputTag);
+
+            $tag = Tag::firstOrCreate([
+                'slug' => Str::slug($inputTag)],
+                [
+                'name' => $inputTag
+            ]);
+
+            $event->tags()->attach($tag->id);
+
+        }
+
+        return redirect()->route('event.index');
     }
 
     /**
