@@ -57,31 +57,37 @@ class EventController extends Controller
 
         if($request->filled('premium')) $amount += 500;
 
-        $authed_user->charge($amount, $request->payment_method);
+
+        if (!empty($request->payment_method)) {
+
+     
+            $authed_user->charge($amount, 
+            $request->payment_method);
 
 
-        $event = $authed_user->events()->create([
-            'title' => $request->title,
-            'slug' => Str::slug($request->title),
-            'content' => $request->content,
-            'premium' => $request->filled('premium'),
-            'starts_at' => $request->starts_at . '20:00:00',
-            'ends_at' => $request->ends_at . '20:00:00',
-        ]);
-
-        $tags = explode(',', $request->tags);
-
-        foreach ($tags as $inputTag) {
-            $inputTag = trim($inputTag);
-
-            $tag = Tag::firstOrCreate([
-                'slug' => Str::slug($inputTag)],
-                [
-                'name' => $inputTag
+            $event = $authed_user->events()->create([
+                'title' => $request->title,
+                'slug' => Str::slug($request->title),
+                'content' => $request->content,
+                'premium' => $request->filled('premium'),
+                'starts_at' => $request->starts_at . '20:00:00',
+                'ends_at' => $request->ends_at . '20:00:00',
             ]);
 
-            $event->tags()->attach($tag->id);
+            $tags = explode(',', $request->tags);
 
+            foreach ($tags as $inputTag) {
+                $inputTag = trim($inputTag);
+
+                $tag = Tag::firstOrCreate([
+                    'slug' => Str::slug($inputTag)],
+                    [
+                    'name' => $inputTag
+                ]);
+
+                $event->tags()->attach($tag->id);
+
+            }
         }
 
         return redirect()->route('event.index');
