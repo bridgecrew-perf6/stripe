@@ -745,6 +745,10 @@ select {
   margin-left: auto;
   margin-right: auto;
 }
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
 .-mx-4 {
   margin-left: -1rem;
   margin-right: -1rem;
@@ -878,6 +882,9 @@ select {
 }
 .w-8 {
   width: 2rem;
+}
+.w-1\/2 {
+  width: 50%;
 }
 .w-48 {
   width: 12rem;
@@ -1054,6 +1061,14 @@ select {
 .bg-gray-800 {
   --tw-bg-opacity: 1;
   background-color: rgb(31 41 55 / var(--tw-bg-opacity));
+}
+.bg-yellow-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 240 138 / var(--tw-bg-opacity));
+}
+.bg-yellow-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 249 195 / var(--tw-bg-opacity));
 }
 .fill-current {
   fill: currentColor;
