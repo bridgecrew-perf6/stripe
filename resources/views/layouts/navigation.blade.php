@@ -1,7 +1,8 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
+    <div class="relative">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
+        <div class="flex justify-between h-16 items-center min-w-600">
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
@@ -11,39 +12,39 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex items-center justify-between">
-                    <x-nav-link :href="route('event.index')" :active="request()->routeIs('event.index')">
+                <div class="flex items-center">
+                    <div class="space-x-8 sm:-my-px sm:ml-10 sm:flex items-center justify-between">
+                        <x-nav-link :href="route('event.index')" :active="request()->routeIs('event.index')">
                         {{ __('Events') }}
-                    </x-nav-link>
+                        </x-nav-link>
 
-                    <x-nav-link :href="route('encours')" :active="request()->routeIs('encours')">
+                        <x-nav-link :href="route('encours')" :active="request()->routeIs('encours')">
                         {{ __('Events En cours') }}
-                    </x-nav-link>
+                        </x-nav-link>
 
-                    <x-nav-link :href="route('termine')" :active="request()->routeIs('termine')">
+                        <x-nav-link :href="route('termine')" :active="request()->routeIs('termine')">
                         {{ __('Events terminés') }}
-                    </x-nav-link>
+                        </x-nav-link>
 
-                    <x-nav-link :href="route('event.create')" :active="request()->routeIs('event.create')">
+                        <x-nav-link :href="route('event.create')" :active="request()->routeIs('event.create')">
                         {{ __('Ajouter') }}
-                    </x-nav-link>
-
-
-                    @guest
-
-                    @if (Route::has('login'))
-                    <div class="hidden top-0 right-0 px-6 py-4 sm:block">
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
-                        @endif
+                        </x-nav-link>
                     </div>
-                    @endif
-                    @endguest
 
                 </div>
             </div>
+
+            @guest
+            <div class="hidden top-0 right-0 px-6 py-4 sm:block">
+                <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline mr-5">Log in</a>
+
+                @if (Route::has('register'))
+                    <a href="{{ route('register') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
+                @endif
+            </div>
+            @endguest
+        
+        
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -75,6 +76,7 @@
                     </x-slot>
                 </x-dropdown>
             </div>
+        </div>
 
             <!-- Hamburger -->
             <div class="-mr-2 flex items-center sm:hidden">
@@ -87,6 +89,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
