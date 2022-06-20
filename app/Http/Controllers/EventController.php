@@ -32,6 +32,8 @@ class EventController extends Controller
 
     }
 
+   
+
     /**
      * Show the form for creating a new resource.
      *
@@ -137,4 +139,28 @@ class EventController extends Controller
     {
         //
     }
+
+
+     // affiche les evnements en cours
+     public function encours()
+     {
+         $events = Event::where('starts_at', '<', now())
+         ->with(['user', 'tags'])
+         ->orderBy('starts_at', 'asc')
+         ->get();
+ 
+         return view('events.encours', compact('events'));
+ 
+     }
+
+     public function termines()
+     {
+         $events = Event::where('ends_at', '<', now())
+         ->with(['user', 'tags'])
+         ->orderBy('starts_at', 'asc')
+         ->get();
+ 
+         return view('events.encours', compact('events'));
+ 
+     }
 }

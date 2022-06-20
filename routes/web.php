@@ -15,13 +15,18 @@ use App\Http\Controllers\EventController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('welcomebis');
+})->name('welcomebis');
+
+Route::get('event/encours', [EventController::class,'encours'])->name('encours');
+
+Route::get('event/termines', [EventController::class,'termines'])->name('termines');
 
 Route::resource('event', EventController::class);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
