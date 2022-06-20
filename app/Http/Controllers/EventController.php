@@ -32,6 +32,38 @@ class EventController extends Controller
 
     }
 
+
+    // Evenement en cours
+    public function indexCours()
+    {
+        $events = Event::where('starts_at', '<=', now())
+        ->where('ends_at', '>=', now())
+        ->with(['user', 'tags'])
+        ->orderBy('starts_at', 'asc')
+        ->get();
+
+        return view ('events.index', compact('events'));
+
+    }
+
+
+
+    //Evenement terminé
+    // Evenement en cours
+    public function indexTermine()
+    {
+        $events = Event::where('ends_at', '<', now())
+        ->with(['user', 'tags'])
+        ->orderBy('starts_at', 'asc')
+        ->get();
+
+        return view ('events.index', compact('events'));
+
+    }
+
+
+
+
     /**
      * Show the form for creating a new resource.
      *

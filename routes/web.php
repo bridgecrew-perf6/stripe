@@ -14,11 +14,16 @@ use App\Http\Controllers\EventController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [EventController::class,'index'])->name('accueil');
+
+
+Route::get('event/encours', [EventController::class,'indexCours'])->name('encours');
+
+Route::get('event/termine', [EventController::class,'indexTermine'])->name('termine');
+
 
 Route::resource('event', EventController::class);
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');

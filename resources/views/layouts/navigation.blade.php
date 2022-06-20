@@ -5,16 +5,43 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('accueil') }}">
                         <x-application-logo class="block h-10 w-auto fill-current text-gray-600" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex items-center justify-between">
+                    <x-nav-link :href="route('event.index')" :active="request()->routeIs('event.index')">
+                        {{ __('Events') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('encours')" :active="request()->routeIs('encours')">
+                        {{ __('Events En cours') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('termine')" :active="request()->routeIs('termine')">
+                        {{ __('Events terminés') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('event.create')" :active="request()->routeIs('event.create')">
+                        {{ __('Ajouter') }}
+                    </x-nav-link>
+
+
+                    @guest
+
+                    @if (Route::has('login'))
+                    <div class="hidden top-0 right-0 px-6 py-4 sm:block">
+                        <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
+
+                        @if (Route::has('register'))
+                            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
+                        @endif
+                    </div>
+                    @endif
+                    @endguest
+
                 </div>
             </div>
 
@@ -63,11 +90,6 @@
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-        </div>
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
@@ -76,7 +98,7 @@
                 <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
                 <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
             </div>
-            @endauth
+
 
             <div class="mt-3 space-y-1">
                 <!-- Authentication -->
@@ -90,6 +112,43 @@
                     </x-responsive-nav-link>
                 </form>
             </div>
+            @endauth
+            <div class="mt-3 space-y-1">
+                <form method="POST" action="{{ route('event.index') }}">
+                    @csrf
+
+                    <x-responsive-nav-link :href="route('event.index')"
+                            onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                        {{ __('Event') }}
+                    </x-responsive-nav-link>
+                </form>
+            </div>
+
+            <div class="mt-3 space-y-1">
+                <form method="GET" action="{{ route('encours') }}">
+                    @csrf
+
+                    <x-responsive-nav-link :href="route('encours')"
+                            onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                        {{ __('Event en cours') }}
+                    </x-responsive-nav-link>
+                </form>
+            </div>
+
+            <div class="mt-3 space-y-1">
+                <form method="GET" action="{{ route('termine') }}">
+                    @csrf
+
+                    <x-responsive-nav-link :href="route('termine')"
+                            onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                        {{ __('Event terminés') }}
+                    </x-responsive-nav-link>
+                </form>
+            </div>
+
         </div>
     </div>
 </nav>
