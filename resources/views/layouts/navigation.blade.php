@@ -1,6 +1,5 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
-    <div class="relative">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16 items-center min-w-600">
             <div class="flex">
@@ -12,8 +11,8 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="flex items-center">
-                    <div class="space-x-8 sm:-my-px sm:ml-10 sm:flex items-center justify-between">
+                <div class="hidden sm:flex sm:items-center">
+                    <div class="space-x-8 sm:-my-px sm:ml-10 sm:flex items-center justify-between ">
                         <x-nav-link :href="route('event.index')" :active="request()->routeIs('event.index')">
                         {{ __('Events') }}
                         </x-nav-link>
@@ -30,11 +29,11 @@
                         {{ __('Ajouter') }}
                         </x-nav-link>
                     </div>
-
                 </div>
             </div>
 
-            @guest
+            <div class="relative">
+            @guest  
             <div class="hidden top-0 right-0 px-6 py-4 sm:block">
                 <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline mr-5">Log in</a>
 
@@ -95,11 +94,11 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
 
         <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
+        <div class="pt-4 border-t border-gray-200 bg-gray-500">
             @auth
             <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                <div class="font-medium text-lg text-green-500">{{ Auth::user()->name }}</div>
+                <div class="font-medium text-base text-black">{{ Auth::user()->email }}</div>
             </div>
 
 
@@ -108,22 +107,22 @@
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
 
-                    <x-responsive-nav-link :href="route('logout')"
+                    <x-responsive-nav-link class="font-medium text-white text-sm mb-10" :href="route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        {{ __('logout') }}
                     </x-responsive-nav-link>
                 </form>
             </div>
             @endauth
             <div class="mt-3 space-y-1">
-                <form method="POST" action="{{ route('event.index') }}">
+                <form method="GET" action="{{ route('event.index') }}">
                     @csrf
 
-                    <x-responsive-nav-link :href="route('event.index')"
+                    <x-responsive-nav-link class="text-white" :href="route('event.index')" :active="request()->routeIs('event.index')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('Event') }}
+                        {{ __('Events') }}
                     </x-responsive-nav-link>
                 </form>
             </div>
@@ -132,10 +131,10 @@
                 <form method="GET" action="{{ route('encours') }}">
                     @csrf
 
-                    <x-responsive-nav-link :href="route('encours')"
+                    <x-responsive-nav-link class="text-white" :href="route('encours')" :active="request()->routeIs('encours')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('Event en cours') }}
+                        {{ __('Events en cours') }}
                     </x-responsive-nav-link>
                 </form>
             </div>
@@ -144,13 +143,23 @@
                 <form method="GET" action="{{ route('termine') }}">
                     @csrf
 
-                    <x-responsive-nav-link :href="route('termine')"
+                    <x-responsive-nav-link class="text-white" :href="route('termine')" :active="request()->routeIs('termine')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('Event terminés') }}
+                        {{ __('Events terminés') }}
                     </x-responsive-nav-link>
                 </form>
             </div>
+
+            @guest
+            <div class="mt-3 px-4 text-center h-10">
+                <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline mr-5 text-white">Log in</a>
+
+                @if (Route::has('register'))
+                    <a href="{{ route('register') }}" class="text-sm text-gray-700 dark:text-gray-500 underline text-white">Register</a>
+                @endif
+            </div>
+            @endguest
 
         </div>
     </div>

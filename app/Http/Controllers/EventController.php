@@ -7,6 +7,7 @@ use App\Models\Event;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
+
 class EventController extends Controller
 {
    
@@ -23,7 +24,7 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::where('starts_at', '>=', now())
+        $events = Event::whereDate('starts_at', '>=', now()->tz('America/Martinique'))
         ->with(['user', 'tags'])
         ->orderBy('starts_at', 'asc')
         ->get();
@@ -36,12 +37,12 @@ class EventController extends Controller
     // Evenement en cours
     public function indexCours()
     {
-        $events = Event::where('starts_at', '<=', now())
-        ->where('ends_at', '>=', now())
+        $events = Event::whereDate('starts_at', '<=', now())
+        ->whereDate('ends_at', '>', now())
         ->with(['user', 'tags'])
         ->orderBy('starts_at', 'asc')
         ->get();
-
+     
         return view ('events.index', compact('events'));
 
     }
@@ -52,11 +53,11 @@ class EventController extends Controller
     // Evenement en cours
     public function indexTermine()
     {
-        $events = Event::where('ends_at', '<', now())
+        $events = Event::whereDate('ends_at', '<', now())
         ->with(['user', 'tags'])
         ->orderBy('starts_at', 'asc')
         ->get();
-
+        
         return view ('events.index', compact('events'));
 
     }
