@@ -8,7 +8,15 @@
                 @endif
                 @if(request()->routeIs('encours')) Liste des évènements en cours
                 @endif
-                @if(request()->routeIs('termine')) Liste des évènements terminés
+                @if(request()->routeIs('termine'))
+                <div class="flex justify-between items-center">
+                  <div>Liste des évènements terminés</div>
+                  <div class="flex">
+                    <div class="border border-red-500 w-5 h-5 px-3 mr-2 items-center">
+                    </div>
+                    <div class="text-sm">Supprimer</div>
+                  </div>
+                </div>
                 @endif
                 @if(request()->routeIs('accueil')) Publier vos évènements : Prix 10€ - Premium 15€
                 @endif
@@ -22,7 +30,22 @@
   <div class="container px-5 py-10 mx-auto">
     <div class="flex flex-wrap -mx-4 -my-8 justify-center">
     @foreach ($events as $event)
-    <div class="py-8 px-4 lg:w-1/3 sm:w-1/2 w-full {{ $event->premium ? 'border bg-yellow-100' : 'border bg-gray-100' }}">
+    @auth
+    @if(request()->routeIs('termine') and (Auth::user()->id == $event->user->id))
+    
+    <form method="POST" action="{{ route('supprimer',[$event]) }}" onclick="event.preventDefault(); this.closest('form').submit();" class="py-8 px-4 lg:w-1/3 sm:w-1/2 w-full {{ $event->premium ? 'border bg-yellow-100' : 'border bg-gray-100' }} {{ Auth::user()->id == $event->user->id ? 'hover:border-red-500' : 'hover:border-lime-500' }} cursor-pointer">
+      @csrf
+    
+    @else
+                                 
+     <div class="py-8 px-4 lg:w-1/3 sm:w-1/2 w-full {{ $event->premium ? 'border bg-yellow-100' : 'border bg-gray-100' }} hover:border-lime-500">
+     
+      @endif
+      @endauth
+
+      @guest
+      <div class="py-8 px-4 lg:w-1/3 sm:w-1/2 w-full {{ $event->premium ? 'border bg-yellow-100' : 'border bg-gray-100' }} hover:border-lime-500">
+      @endguest
     <div class="h-full flex items-start">
         <div class="w-12 flex-shrink-0 flex flex-col text-center leading-none">
         <span class="text-gray-500 pb-2 mb-2 border-b-2 border-gray-200">{{ $event->starts_at->translatedFormat('M') }}</span>
@@ -40,7 +63,7 @@
           @endforeach
         <h1 class="title-font text-xl font-medium text-gray-900 mb-3">{{ $event->title }}</h1>
         <p class="leading-relaxed mb-5">{{ $event->content }}</p>
-        <a class="inline-flex items-center">
+        <a class="inline-flex items-center" href="#">
             <img alt="blog" src="https://dummyimage.com/103x103" class="w-8 h-8 rounded-full flex-shrink-0 object-cover object-center">
             <span class="flex-grow flex flex-col pl-3">
             <span class="title-font font-medium text-gray-900">{{ $event->user->name }}</span>
@@ -48,7 +71,18 @@
         </a>
         </div>
     </div>
-    </div>
+    @auth
+    @if(request()->routeIs('termine') and (Auth::user()->id == $event->user->id))
+
+ </form>
+
+ @else
+   </div>
+   @endif
+   @endauth
+   @guest
+</div>
+   @endguest
     @endforeach
     </div>
   </div>

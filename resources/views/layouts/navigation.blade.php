@@ -153,10 +153,10 @@
 
             @guest
             <div class="mt-3 px-4 text-center h-10">
-                <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline mr-5 text-white">Log in</a>
+                <a href="{{ route('login') }}" class="text-sm text-gray-700 underline mr-5 text-white">Log in</a>
 
                 @if (Route::has('register'))
-                    <a href="{{ route('register') }}" class="text-sm text-gray-700 dark:text-gray-500 underline text-white">Register</a>
+                    <a href="{{ route('register') }}" class="text-sm text-gray-700 underline text-white">Register</a>
                 @endif
             </div>
             @endguest

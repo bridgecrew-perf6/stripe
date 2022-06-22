@@ -21,8 +21,10 @@ Route::get('event/encours', [EventController::class,'indexCours'])->name('encour
 
 Route::get('event/termine', [EventController::class,'indexTermine'])->name('termine');
 
+Route::post('event/{event}', [EventController::class,'supprimer'])->name('supprimer');
 
-Route::resource('event', EventController::class);
+ Route::resource('event', EventController::class);
+
 
 
 Route::get('/dashboard', function () {

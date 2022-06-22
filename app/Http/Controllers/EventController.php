@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tag;
+use App\Models\User;
 use App\Models\Event;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 class EventController extends Controller
@@ -13,7 +15,7 @@ class EventController extends Controller
    
     public function __construct() {
 
-        $this->middleware('auth', ['only' => ['create', 'store']]);
+        $this->middleware('auth', ['only' => ['create', 'store', 'supprimer']]);
     }
 
    
@@ -38,7 +40,7 @@ class EventController extends Controller
     public function indexCours()
     {
         $events = Event::whereDate('starts_at', '<=', now())
-        ->whereDate('ends_at', '>', now())
+        ->whereDate('ends_at', '>=', now())
         ->with(['user', 'tags'])
         ->orderBy('starts_at', 'asc')
         ->get();
@@ -50,7 +52,6 @@ class EventController extends Controller
 
 
     //Evenement terminé
-    // Evenement en cours
     public function indexTermine()
     {
         $events = Event::whereDate('ends_at', '<', now())
@@ -168,6 +169,17 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
-        //
+
     }
+
+
+    public function supprimer(Event $event)
+    {
+
+        // dd($event);
+        $event->delete();
+    
+        return back();
+    }
+
 }
