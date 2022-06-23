@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
 
 /*
@@ -16,7 +17,6 @@ use App\Http\Controllers\EventController;
 
 Route::get('/', [EventController::class,'index'])->name('accueil');
 
-
 Route::get('event/encours', [EventController::class,'indexCours'])->name('encours');
 
 Route::get('event/termine', [EventController::class,'indexTermine'])->name('termine');
@@ -25,6 +25,11 @@ Route::post('event/{event}', [EventController::class,'supprimer'])->name('suppri
 
  Route::resource('event', EventController::class);
 
+
+
+ Route::get('/user', [UserController::class,'index'])->name('user-list');
+
+ 
 
 
 Route::get('/dashboard', function () {
