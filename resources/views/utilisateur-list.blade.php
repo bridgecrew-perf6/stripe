@@ -16,10 +16,12 @@
 
     <div class="flex flex-wrap -mx-4 -my-8 justify-center">
     @foreach ($users as $user)
-      <div class="p-6 bg-white border border-gray-300 font-semibold text-xl text-gray-800 text-center leading-tight">
-
-        <div>{{ $user->name }}</div>
-        <div>{{ $user->email }}</div>
+      <div class="rounded-lg mb-2 mr-2 p-6 bg-white border border-gray-300 font-semibold text-base text-gray-800 text-center hover:bg-yellow-400 hover:shadow-2xl leading-tight">
+        <img alt="blog" src="https://dummyimage.com/103x103" class="w-8 h-8 rounded-full object-cover object-center inline mb-2">
+        <!-- <span class="flex-grow flex flex-col pl-3"> -->
+        {{ $user->name }}</>
+      <!-- </span> -->
+        <div class="text-sm">{{ $user->email }}</div>
       
       </div>
     @endforeach

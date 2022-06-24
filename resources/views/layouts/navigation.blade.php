@@ -26,7 +26,11 @@
                         </x-nav-link>
 
                         <x-nav-link :href="route('event.create')" :active="request()->routeIs('event.create')">
-                        {{ __('Ajouter') }}
+                        {{ __('Ajouter un Event') }}
+                        </x-nav-link>
+
+                        <x-nav-link :href="route('user-list')" :active="request()->routeIs('user-list')">
+                        {{ __('Utilisateurs') }}
                         </x-nav-link>
                     </div>
                 </div>
@@ -115,40 +119,65 @@
                 </form>
             </div>
             @endauth
-            <div class="mt-3 space-y-1">
-                <form method="GET" action="{{ route('event.index') }}">
-                    @csrf
 
-                    <x-responsive-nav-link class="text-white" :href="route('event.index')" :active="request()->routeIs('event.index')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
+            <div class="mt-3 space-y-1">
+                @if(request()->routeIs('event.index'))
+                    <x-responsive-nav-link class="text-white" :active="request()->routeIs('event.index')">
                         {{ __('Events') }}
                     </x-responsive-nav-link>
-                </form>
+                @else
+                    <x-responsive-nav-link class="text-white" :href="route('event.index')">
+                        {{ __('Events') }}
+                    </x-responsive-nav-link>
+                @endif
             </div>
 
             <div class="mt-3 space-y-1">
-                <form method="GET" action="{{ route('encours') }}">
-                    @csrf
-
-                    <x-responsive-nav-link class="text-white" :href="route('encours')" :active="request()->routeIs('encours')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
+                    @if(request()->routeIs('encours'))
+                    <x-responsive-nav-link class="text-white" :active="request()->routeIs('encours')">
                         {{ __('Events en cours') }}
                     </x-responsive-nav-link>
-                </form>
+                    @else
+                    <x-responsive-nav-link class="text-white" :href="route('encours')">
+                        {{ __('Events en cours') }}
+                    </x-responsive-nav-link>
+                    @endif
             </div>
 
             <div class="mt-3 space-y-1">
-                <form method="GET" action="{{ route('termine') }}">
-                    @csrf
-
-                    <x-responsive-nav-link class="text-white" :href="route('termine')" :active="request()->routeIs('termine')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Events terminés') }}
+                @if(request()->routeIs('termine'))
+                    <x-responsive-nav-link class="text-white" :active="request()->routeIs('termine')"> 
+                        {{ __('Events terminé') }}
                     </x-responsive-nav-link>
-                </form>
+                @else
+                    <x-responsive-nav-link class="text-white" :href="route('termine')"> 
+                        {{ __('Events terminé') }}
+                    </x-responsive-nav-link>
+                @endif
+            </div>
+
+            <div class="mt-3 space-y-1">
+                @if(request()->routeIs('event.create'))
+                    <x-responsive-nav-link class="text-white" :active="request()->routeIs('event.create')">
+                        {{ __('Ajouter un Event') }}
+                    </x-responsive-nav-link>
+                @else
+                    <x-responsive-nav-link class="text-white" :href="route('event.create')">
+                        {{ __('Ajouter un Event') }}
+                    </x-responsive-nav-link>
+                @endif
+            </div>
+
+            <div class="mt-3 space-y-1">
+                @if(request()->routeIs('user-list'))
+                    <x-responsive-nav-link class="text-white" :active="request()->routeIs('user-list')">
+                        {{ __('Utilisateurs') }}
+                    </x-responsive-nav-link>
+                @else
+                    <x-responsive-nav-link class="text-white" :href="route('user-list')">
+                        {{ __('Utilisateurs') }}
+                    </x-responsive-nav-link>
+                @endif
             </div>
 
             @guest
