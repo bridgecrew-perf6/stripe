@@ -1,10 +1,9 @@
-<x-app-layout>
-
+<x-app-layout :user="$user">
   <div class="py-10">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="mt-10 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 bg-white border-b border-gray-200 font-semibold text-xl text-gray-800 leading-tight">
-                Liste des utilisateurs
+                Les utilisateurs
             </div>
         </div>
     </div>
@@ -16,11 +15,9 @@
 
     <div class="flex flex-wrap -mx-4 -my-8 justify-center">
     @foreach ($users as $user)
-      <div class="rounded-lg mb-2 mr-2 p-6 bg-white border border-gray-300 font-semibold text-base text-gray-800 text-center hover:bg-yellow-400 hover:shadow-2xl leading-tight">
-        <img alt="blog" src="https://dummyimage.com/103x103" class="w-8 h-8 rounded-full object-cover object-center inline mb-2">
-        <!-- <span class="flex-grow flex flex-col pl-3"> -->
-        {{ $user->name }}</>
-      <!-- </span> -->
+      <div class="rounded-lg mb-2 mr-2 p-6 bg-white border border-gray-300 font-semibold text-base text-gray-800 text-center hover:bg-yellow-500 hover:shadow-2xl leading-tight">
+        <a href="{{ route('user-events', [$user]) }}" class="hover:text-white font-bold"><img alt="blog" src="https://dummyimage.com/103x103" class="w-8 h-8 rounded-full object-cover object-center inline mb-2">
+        {{ $user->name }}</a>
         <div class="text-sm">{{ $user->email }}</div>
       
       </div>

@@ -23,7 +23,15 @@ Route::get('event/termine', [EventController::class,'indexTermine'])->name('term
 
 Route::post('event/{event}', [EventController::class,'supprimer'])->name('supprimer');
 
- Route::resource('event', EventController::class);
+
+Route::get('event/user/{user}', [EventController::class,'user_events'])->name('user-events');
+
+Route::get('event/encours/user/{user}', [EventController::class,'user_indexCours'])->name('user-encours');
+
+Route::get('event/termine/user/{user}', [EventController::class,'user_indexTermine'])->name('user-termine');
+
+
+Route::resource('event', EventController::class);
 
 
 

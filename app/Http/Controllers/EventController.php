@@ -26,12 +26,13 @@ class EventController extends Controller
      */
     public function index()
     {
+        $user = "";
         $events = Event::whereDate('starts_at', '>=', now()->tz('America/Martinique'))
         ->with(['user', 'tags'])
         ->orderBy('starts_at', 'asc')
         ->get();
 
-        return view ('events.index', compact('events'));
+        return view ('events.index', compact('events','user'));
 
     }
 
@@ -39,27 +40,52 @@ class EventController extends Controller
     // Evenement en cours
     public function indexCours()
     {
+        $user = "";
         $events = Event::whereDate('starts_at', '<=', now())
         ->whereDate('ends_at', '>=', now())
         ->with(['user', 'tags'])
         ->orderBy('starts_at', 'asc')
         ->get();
      
-        return view ('events.index', compact('events'));
+        return view ('events.index', compact('events','user'));
 
     }
+
+     // Evenement en cours de l'utilisateur
+     public function user_indexCours(User $user)
+     {
+        $events = $user->events;
+         $events = $events->where('starts_at', '<=', now())
+            ->where('ends_at', '>=', now())
+            ->sortBy('starts_at');
+      
+         return view ('events.index', compact(['events', 'user']));
+ 
+     }
 
 
 
     //Evenement terminé
     public function indexTermine()
     {
+        $user = "";
         $events = Event::whereDate('ends_at', '<', now())
         ->with(['user', 'tags'])
         ->orderBy('starts_at', 'asc')
         ->get();
         
-        return view ('events.index', compact('events'));
+        return view ('events.index', compact('events','user'));
+
+    }
+
+    //Evenement terminé de l'utilisateur
+    public function user_indexTermine(User $user)
+    {
+        $events = $user->events;
+        $events = $events->where('ends_at', '<', now())
+        ->sortBy('starts_at');
+        
+        return view ('events.index', compact('events','user'));
 
     }
 
@@ -126,6 +152,19 @@ class EventController extends Controller
 
         return redirect()->route('event.index');
     }
+
+
+    // List des evenements de l'utilisateur
+    public function user_events(User $user) {
+        
+        $events = $user->events;
+        $events = $events->where('starts_at', '>=', now())
+        ->SortBy('starts_at');
+
+        return view('events.index', compact('events', 'user'));
+
+    }
+
 
     /**
      * Display the specified resource.

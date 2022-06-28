@@ -6,6 +6,15 @@ use Illuminate\View\Component;
 
 class AppLayout extends Component
 {
+
+    public $user;
+
+
+
+    public function __construct($user) {
+
+        $this->user = $user;
+    }
     /**
      * Get the view / contents that represents the component.
      *

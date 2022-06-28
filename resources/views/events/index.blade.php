@@ -1,23 +1,62 @@
-<x-app-layout>
-
+<x-app-layout :user="$user">
   <div class="py-10">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="mt-10 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 bg-white border-b border-gray-200 font-semibold text-xl text-gray-800 leading-tight">
-                @if(request()->routeIs('event.index')) Liste des évènements
+                @if(request()->routeIs('user-events'))
+                  <div class="flex justify-between items-center">
+                    <div class="p-1">Les évènements de l'utilisateur</div>
+                  <div class=" border bg-yellow-500 py-1 px-5 rounded-lg">
+                    <div class="text-base font-bold">{{ $user->name }}</div>
+                  </div>
+                  </div>
                 @endif
-                @if(request()->routeIs('encours')) Liste des évènements en cours
+
+                @if(request()->routeIs('event.index'))
+                <div class="p-1">Les évènements</div>
                 @endif
+
+                @if(request()->routeIs('user-encours'))
+                <div class="flex justify-between items-center">
+                    <div class="p-1">Les évènements en cours de l'utilisateur</div>
+                  <div class=" border bg-yellow-500 py-1 px-5 rounded-lg">
+                    <div class="text-base font-bold">{{ $user->name }}</div>
+                  </div>
+                  </div>
+                @endif
+
+                @if(request()->routeIs('encours'))
+                <div class="p-1">Les évènements en cours</div>
+                @endif
+
                 @if(request()->routeIs('termine'))
                 <div class="flex justify-between items-center">
-                  <div>Liste des évènements terminés</div>
-                  <div class="flex">
-                    <div class="border border-red-500 w-5 h-5 px-3 mr-2 items-center">
+                  <div>Les évènements terminés</div>
+                  <div class="flex items-center">
+                    <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 items-center text-red-500 ml-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
                     </div>
                     <div class="text-sm">Supprimer</div>
                   </div>
                 </div>
                 @endif
+
+                @if(request()->routeIs('user-termine'))
+                <div class="flex justify-between items-center">
+                    <div>Les évènements terminés de l'utilisateur</div>
+                    <div class="flex">
+                        <div class="flex border bg-yellow-500 py-1 px-5 rounded-lg">
+                            <div class="text-base font-bold">{{ $user->name }}</div>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 items-center text-red-500 ml-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
                 @if(request()->routeIs('accueil')) Publier vos évènements : Prix 10€ - Premium 15€
                 @endif
             </div>
@@ -31,9 +70,9 @@
     <div class="flex flex-wrap -mx-4 -my-8 justify-center">
     @foreach ($events as $event)
     @auth
-    @if(request()->routeIs('termine') and (Auth::user()->id == $event->user->id))
+    @if((request()->routeIs('user-termine') or request()->routeIs('termine'))and (Auth::user()->id == $event->user->id))
     
-    <form method="POST" action="{{ route('supprimer',[$event]) }}" onclick="event.preventDefault(); this.closest('form').submit();" class="py-8 px-4 lg:w-1/3 sm:w-1/2 w-full {{ $event->premium ? 'border bg-yellow-100' : 'border bg-gray-100' }} {{ Auth::user()->id == $event->user->id ? 'hover:border-red-500' : 'hover:border-lime-500' }} cursor-pointer">
+    <form method="POST" action="{{ route('supprimer',[$event]) }}" onclick="event.preventDefault(); this.closest('form').submit();" class="py-8 px-4 lg:w-1/3 sm:w-1/2 w-full {{ $event->premium ? 'border bg-yellow-100' : 'border bg-gray-100' }} hover:border-red-500 cursor-pointer">
       @csrf
     
     @else
@@ -72,7 +111,7 @@
         </div>
     </div>
     @auth
-    @if(request()->routeIs('termine') and (Auth::user()->id == $event->user->id))
+    @if((request()->routeIs('user-termine')  or request()->routeIs('termine'))and (Auth::user()->id == $event->user->id))
 
  </form>
 

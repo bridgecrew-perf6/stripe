@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="w-full bg-white border-b border-gray-100 fixed">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16 items-center min-w-600">
@@ -13,17 +13,35 @@
                 <!-- Navigation Links -->
                 <div class="hidden sm:flex sm:items-center">
                     <div class="space-x-8 sm:-my-px sm:ml-10 sm:flex items-center justify-between ">
+                        @if(!empty($user))
+                        <x-nav-link :href="route('user-events',[$user])" :active="request()->routeIs('user-events')">
+                        {{ __('Events') }}
+                        </x-nav-link>
+                        @else
                         <x-nav-link :href="route('event.index')" :active="request()->routeIs('event.index')">
                         {{ __('Events') }}
                         </x-nav-link>
+                        @endif
 
+                        @if(!empty($user))
+                        <x-nav-link :href="route('user-encours',[$user])" :active="request()->routeIs('user-encours')">
+                        {{ __('Events En cours') }}
+                        </x-nav-link>
+                        @else
                         <x-nav-link :href="route('encours')" :active="request()->routeIs('encours')">
                         {{ __('Events En cours') }}
                         </x-nav-link>
+                        @endif
 
+                        @if(!empty($user))
+                        <x-nav-link :href="route('user-termine', [$user])" :active="request()->routeIs('user-termine')">
+                        {{ __('Events terminés') }}
+                        </x-nav-link>
+                        @else
                         <x-nav-link :href="route('termine')" :active="request()->routeIs('termine')">
                         {{ __('Events terminés') }}
                         </x-nav-link>
+                        @endif
 
                         <x-nav-link :href="route('event.create')" :active="request()->routeIs('event.create')">
                         {{ __('Ajouter un Event') }}
@@ -39,7 +57,7 @@
             <div class="relative">
             @guest  
             <div class="hidden top-0 right-0 px-6 py-4 sm:block">
-                <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline mr-5">Log in</a>
+                <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline mr-5">Login</a>
 
                 @if (Route::has('register'))
                     <a href="{{ route('register') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
@@ -67,9 +85,9 @@
                     @endauth
                     <x-slot name="content">
                         <!-- Authentication -->
+                        <a class="ml-4" href="{{ route('user-events',[Auth::user()]) }}">Mes Events</a>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
@@ -98,59 +116,61 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
 
         <!-- Responsive Settings Options -->
-        <div class="pt-4 border-t border-gray-200 bg-gray-500">
+        <div class="pt-4 border-t border-gray-200 bg-gray-600 pb-4">
             @auth
             <div class="px-4">
                 <div class="font-medium text-lg text-green-500">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-base text-black">{{ Auth::user()->email }}</div>
+                <div class="font-medium text-base text-gray-400">{{ Auth::user()->email }}</div>
             </div>
 
 
             <div class="mt-3 space-y-1">
                 <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-responsive-nav-link class="font-medium text-white text-sm mb-10" :href="route('logout')"
+                <div class="mt-3 px-4 text-center h-10">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <a href="{{ route('user-events', [Auth::user()]) }}" class="text-sm text-gray-400 mr-5 hover:text-white">Mes Events</a>
+                        <a class="font-medium text-sm mb-10 text-gray-400 underline hover:text-white" href="{{ route('logout')}}"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('logout') }}
-                    </x-responsive-nav-link>
-                </form>
+                            {{ __('logout') }}
+                        </a>
+                    </form>
+                </div>
             </div>
             @endauth
 
             <div class="mt-3 space-y-1">
-                @if(request()->routeIs('event.index'))
-                    <x-responsive-nav-link class="text-white" :active="request()->routeIs('event.index')">
+                @if(empty($user))
+                    <x-responsive-nav-link class="text-white" :href="route('event.index')" :active="request()->routeIs('event.index')">
                         {{ __('Events') }}
                     </x-responsive-nav-link>
                 @else
-                    <x-responsive-nav-link class="text-white" :href="route('event.index')">
+                    <x-responsive-nav-link class="text-white" :href="route('user-events', [$user])" :active="request()->routeIs('user-events', [$user])">
                         {{ __('Events') }}
                     </x-responsive-nav-link>
                 @endif
             </div>
 
             <div class="mt-3 space-y-1">
-                    @if(request()->routeIs('encours'))
-                    <x-responsive-nav-link class="text-white" :active="request()->routeIs('encours')">
+                @if(empty($user))
+                    <x-responsive-nav-link class="text-white" :href="route('encours')"     :active="request()->routeIs('encours')">
                         {{ __('Events en cours') }}
                     </x-responsive-nav-link>
-                    @else
-                    <x-responsive-nav-link class="text-white" :href="route('encours')">
+                @else
+                    <x-responsive-nav-link class="text-white" :href="route('user-encours', [$user])" :active="request()->routeIs('user-encours', [$user])">
                         {{ __('Events en cours') }}
                     </x-responsive-nav-link>
-                    @endif
+                 @endif
             </div>
 
             <div class="mt-3 space-y-1">
-                @if(request()->routeIs('termine'))
-                    <x-responsive-nav-link class="text-white" :active="request()->routeIs('termine')"> 
+                @if(empty($user))
+                    <x-responsive-nav-link class="text-white" :href="route('termine')" :active="request()->routeIs('termine')"> 
                         {{ __('Events terminé') }}
                     </x-responsive-nav-link>
                 @else
-                    <x-responsive-nav-link class="text-white" :href="route('termine')"> 
+                    <x-responsive-nav-link class="text-white" :href="route('user-termine', [$user])" :active="request()->routeIs('user-termine', [$user])"> 
                         {{ __('Events terminé') }}
                     </x-responsive-nav-link>
                 @endif
